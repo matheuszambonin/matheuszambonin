@@ -1,0 +1,97 @@
+<!doctype html>
+<!--
+  Gera assets/banner.png: carta topográfica da Serra do Mucajaí com a frase de Engels.
+  Uso: ver gerador/README.md. O canvas é desenhado em 1280x320 e exportado em escala 2x.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; background: #EFE7D6; }
+  canvas { display: block; width: 2560px; height: 640px; }
+</style>
+</head>
+<body>
+<canvas id="banner" width="2560" height="640"></canvas>
+<script src="dem-mucajai.js"></script>
+<script>
+const W = 1280, H = 320, ESCALA = 2;
+const SERIF = '"Source Serif 4"';
+
+// marching squares
+function contours(ctx, g, w, h, sx, sy, levels, style) {
+  levels.forEach((L, li) => {
+    style(ctx, li, L);
+    ctx.beginPath();
+    for (let j = 0; j < h - 1; j++) for (let i = 0; i < w - 1; i++) {
+      const a = g[j * w + i], b = g[j * w + i + 1], c = g[(j + 1) * w + i + 1], d = g[(j + 1) * w + i];
+      const idx = (a > L) << 3 | (b > L) << 2 | (c > L) << 1 | (d > L);
+      if (idx === 0 || idx === 15) continue;
+      const T = [i + (L - a) / (b - a), j], R = [i + 1, j + (L - b) / (c - b)];
+      const B = [i + (L - d) / (c - d), j + 1], Lf = [i, j + (L - a) / (d - a)];
+      const segs = {1:[[Lf,B]],2:[[B,R]],3:[[Lf,R]],4:[[T,R]],5:[[Lf,T],[B,R]],6:[[T,B]],7:[[Lf,T]],
+        8:[[Lf,T]],9:[[T,B]],10:[[T,R],[Lf,B]],11:[[T,R]],12:[[Lf,R]],13:[[B,R]],14:[[Lf,B]]}[idx];
+      for (const [p, q] of segs) { ctx.moveTo(p[0] * sx, p[1] * sy); ctx.lineTo(q[0] * sx, q[1] * sy); }
+    }
+    ctx.stroke();
+  });
+}
+
+// Araponga-da-amazônia: prancha "Le Cotinga Caronculé, mâle" (1801), domínio público,
+// Iconographia Zoologica, Special Collections University of Amsterdam (via Wikimedia Commons), convertida para sépia.
+const PRANCHA = new Image(); PRANCHA.src = 'araponga-1801.png';
+function araponga(ctx, x, y, h) {
+  const w = h * PRANCHA.width / PRANCHA.height;
+  ctx.save();
+  ctx.fillStyle = '#EFE7D6'; ctx.fillRect(x - 10, y - 10, w + 20, h + 34);
+  ctx.strokeStyle = '#5A4630'; ctx.lineWidth = 1.4; ctx.strokeRect(x - 10, y - 10, w + 20, h + 34);
+  ctx.lineWidth = 0.6; ctx.strokeRect(x - 5, y - 5, w + 10, h + 24);
+  ctx.globalCompositeOperation = 'multiply'; ctx.drawImage(PRANCHA, x, y, w, h); ctx.globalCompositeOperation = 'source-over';
+  ctx.fillStyle = '#2E2A24'; ctx.textAlign = 'center';
+  ctx.font = `italic 11px ${SERIF}`; ctx.fillText('Araponga-da-amazônia · Procnias albus', x + w / 2, y + h + 15);
+  ctx.restore();
+}
+
+function banner(ctx) {
+  ctx.fillStyle = '#EFE7D6'; ctx.fillRect(0, 0, W, H);
+  // relevo real: Serra do Mucajaí, Copernicus DEM GLO-30 (dem-mucajai.js)
+  const { w: gw, h: gh, z } = window.DEM_SERRA, g = Float32Array.from(z);
+  const cotas = []; for (let m = 200; m <= 1500; m += 50) cotas.push(m);
+  contours(ctx, g, gw, gh, W / (gw - 1), H / (gh - 1), cotas, (c, li) => {
+    const mestra = cotas[li] % 250 === 0;
+    c.strokeStyle = mestra ? '#5A4630' : '#8A6F47'; c.lineWidth = mestra ? 1.6 : 0.7; c.globalAlpha = mestra ? 0.9 : 0.6;
+  });
+  ctx.globalAlpha = 1;
+  let pk = 0; for (let k = 1; k < g.length; k++) if (g[k] > g[pk]) pk = k;
+  const px = (pk % gw) / (gw - 1) * W, py = Math.floor(pk / gw) / (gh - 1) * H;
+  ctx.fillStyle = '#2E2A24'; ctx.beginPath(); ctx.moveTo(px, py - 6); ctx.lineTo(px + 5, py + 3); ctx.lineTo(px - 5, py + 3); ctx.closePath(); ctx.fill();
+  ctx.font = `italic 13px ${SERIF}`; ctx.fillStyle = 'rgba(239,231,214,.9)'; ctx.fillRect(px + 6, py - 9, 104, 17);
+  ctx.fillStyle = '#2E2A24'; ctx.fillText('Serra do Mucajaí', px + 9, py + 4);
+  araponga(ctx, 46, 34, 236);
+  ctx.strokeStyle = '#5A4630'; ctx.lineWidth = 2; ctx.strokeRect(14, 14, W - 28, H - 28);
+  ctx.lineWidth = 0.6; ctx.strokeRect(20, 20, W - 40, H - 40);
+  ctx.fillStyle = 'rgba(239,231,214,.9)'; ctx.fillRect(262, 140, 500, 140);
+  ctx.fillStyle = '#2E2A24';
+  ctx.font = `600 15px ${SERIF}`; ctx.letterSpacing = '4px'; ctx.fillText('MATHEUS ZAMBONIN · GEOTECNOLOGIAS', 278, 172);
+  ctx.letterSpacing = '0px';
+  ctx.font = `italic 32px ${SERIF}`; ctx.fillText('Transformação da quantidade', 278, 216);
+  ctx.fillText('em qualidade, e vice-versa.', 278, 254);
+  ctx.font = `13px ${SERIF}`;
+  ctx.textAlign = 'right'; ctx.fillStyle = 'rgba(239,231,214,.9)'; ctx.fillRect(W - 340, 30, 310, 20); ctx.fillRect(W - 340, H - 50, 310, 36);
+  ctx.fillStyle = '#5A4630'; ctx.fillText('Serra do Mucajaí · Mucajaí-RR · equidistância 50 m', W - 36, 44);
+  ctx.fillText('— F. Engels, Dialética da Natureza', W - 36, H - 34);
+  ctx.font = `10px ${SERIF}`; ctx.fillText('relevo: Copernicus DEM GLO-30 © DLR, Airbus · ESA', W - 36, H - 20); ctx.textAlign = 'left';
+}
+
+Promise.all([`italic 32px ${SERIF}`, `600 15px ${SERIF}`, `13px ${SERIF}`].map(f => document.fonts.load(f)))
+  .then(() => PRANCHA.decode())
+  .then(() => {
+    const ctx = document.getElementById('banner').getContext('2d');
+    ctx.scale(ESCALA, ESCALA);
+    banner(ctx);
+    document.title = 'pronto';
+  });
+</script>
+</body>
+</html>

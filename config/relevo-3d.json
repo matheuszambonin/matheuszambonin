@@ -1,0 +1,19 @@
+{
+  "type": "normal",
+  "fileName": "relevo.svg",
+  "backgroundColor": "#EFE7D6",
+  "foregroundColor": "#2E2A24",
+  "strongColor": "#5A4630",
+  "weakColor": "#8A6F47",
+  "radarColor": "#6E7B4F",
+  "growingAnimation": true,
+  "contribColors": ["#E3D8BE", "#C9B48A", "#A88B5C", "#6E7B4F", "#3F4A2E"],
+  "l10n": {
+    "commit": "Commits",
+    "repo": "Repositórios",
+    "review": "Revisões",
+    "pullreq": "Pull requests",
+    "issue": "Issues",
+    "contrib": "contribuições"
+  }
+}
