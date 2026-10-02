@@ -1,0 +1,400 @@
+<!doctype html>
+<!--
+  PROTÓTIPO DESCARTÁVEL — ticket "Identidade visual geo" (issue #5).
+  Três variantes de identidade visual (motivo: Serra do Mucajaí) (banner, avatar, paleta, motivo, rampa do 3D contrib),
+  dentro de uma imitação da página de perfil do GitHub. Troca por ?variant=A|B|C, setas ou ← →.
+  ?tema=claro|escuro alterna o "GitHub" ao redor, porque o banner vai aparecer nos dois.
+  O texto do README usa o estilo padrão do GitHub de propósito: no perfil real só as imagens mudam.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identidade visual geo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root, :root[data-theme="escuro"] {
+    --bg: #0d1117; --bg2: #151b23; --fg: #e6edf3; --muted: #9198a1; --border: #3d444d; --link: #4493f8; --chip: #262c36;
+  }
+  :root[data-theme="claro"] {
+    --bg: #ffffff; --bg2: #f6f8fa; --fg: #1f2328; --muted: #59636e; --border: #d1d9e0; --link: #0969da; --chip: #eff2f5;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; }
+  header.gh { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 14px 16px; display: flex; gap: 12px; align-items: center; }
+  header.gh .logo { width: 32px; height: 32px; border-radius: 50%; background: var(--fg); opacity: .9; }
+  header.gh b { font-weight: 600; }
+  .tabs { border-bottom: 1px solid var(--border); padding: 0 16px; display: flex; gap: 20px; }
+  .tabs span { padding: 10px 2px; color: var(--muted); }
+  .tabs span.on { color: var(--fg); border-bottom: 2px solid #fd8c73; font-weight: 600; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 140px; display: grid; grid-template-columns: 296px 1fr; gap: 24px; }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; } .side { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; } }
+  .avatar { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--border); display: block; }
+  .side h1 { margin: 16px 0 0; font-size: 24px; line-height: 1.25; font-weight: 600; }
+  .side .login { font-size: 20px; color: var(--muted); font-weight: 300; }
+  .side .bio { margin: 14px 0; font-size: 16px; }
+  .side ul { list-style: none; padding: 0; margin: 0; color: var(--fg); }
+  .side li { padding: 2px 0; }
+  .side li i { display: inline-block; width: 20px; color: var(--muted); font-style: normal; }
+  .readme { border: 1px solid var(--border); border-radius: 6px; padding: 24px; min-width: 0; }
+  .readme .path { font-size: 12px; color: var(--muted); margin-bottom: 16px; font-family: ui-monospace, monospace; }
+  .readme canvas { width: 100%; height: auto; display: block; border-radius: 6px; }
+  .readme h2 { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: .3em; margin: 24px 0 16px; font-weight: 600; }
+  .readme p { margin: 0 0 16px; }
+  .readme blockquote { margin: 0 0 16px; padding: 0 1em; color: var(--muted); border-left: .25em solid var(--border); }
+  .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; }
+  .badge { font: 11px/20px Verdana, sans-serif; color: #fff; display: inline-flex; border-radius: 3px; overflow: hidden; }
+  .badge span { padding: 0 6px; }
+  .badge span:first-child { background: #555; }
+  .contrib-wrap { border-radius: 6px; overflow: hidden; }
+  .note { font-size: 12px; color: var(--muted); }
+
+  .ficha { position: fixed; right: 16px; bottom: 76px; width: 300px; background: #111; color: #eee; border-radius: 10px;
+    padding: 12px 14px; font: 12px/1.45 "IBM Plex Mono", monospace; box-shadow: 0 6px 24px rgba(0,0,0,.4); z-index: 10; }
+  .ficha b { color: #fff; }
+  .ficha .sw { display: flex; gap: 3px; margin: 4px 0 8px; }
+  .ficha .sw div { flex: 1; height: 18px; border-radius: 3px; border: 1px solid #ffffff22; }
+  .ficha button { background: none; border: 0; color: #888; float: right; cursor: pointer; font: inherit; }
+  @media (max-width: 860px) { .ficha { left: 16px; right: 16px; width: auto; bottom: 72px; max-height: 40vh; overflow: auto; } }
+
+  .switcher { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); background: #111; color: #fff;
+    border-radius: 999px; display: flex; align-items: center; gap: 4px; padding: 6px; box-shadow: 0 6px 24px rgba(0,0,0,.45);
+    font: 600 13px "IBM Plex Sans", sans-serif; z-index: 11; white-space: nowrap; }
+  .switcher button { background: #2a2a2a; color: #fff; border: 0; border-radius: 999px; height: 32px; min-width: 32px; cursor: pointer; font: inherit; padding: 0 10px; }
+  .switcher button:hover { background: #3a3a3a; }
+  .switcher .label { padding: 0 10px; min-width: 190px; text-align: center; }
+</style>
+</head>
+<body>
+<header class="gh"><div class="logo"></div><b>matheuszambonin</b><span class="note">· imitação do GitHub para julgar as imagens no contexto</span></header>
+<nav class="tabs"><span class="on">Overview</span><span>Repositories</span><span>Projects</span><span>Stars</span></nav>
+
+<main>
+  <aside class="side">
+    <canvas id="avatar" class="avatar" width="460" height="460"></canvas>
+    <div>
+      <h1>Matheus Zambonin</h1>
+      <div class="login">matheuszambonin</div>
+      <div class="bio">Nuvem de pontos vira terreno: quantidade em qualidade. LiDAR, drones e ferramentas para agentes de IA. Contra a egrégora.</div>
+      <ul>
+        <li><i>▣</i>Geotecnologias</li>
+        <li><i>◎</i>Roraima, Brasil</li>
+        <li><i>✉</i><a style="color:var(--link)">matheuszambonin@gmail.com</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <section class="readme">
+    <div class="path">matheuszambonin / README.md</div>
+    <canvas id="banner" width="1280" height="320"></canvas>
+
+    <h2>Geo</h2>
+    <p>Drones, LiDAR e SIG no extremo norte. O relevo não é coisa parada: é processo, e cada nuvem de pontos é um instante dele.</p>
+    <div class="badges" id="badges"></div>
+
+    <h2>IA</h2>
+    <p>Ferramentas, skills e agentes para o Claude Code. Estudando votação verificável em blockchain.</p>
+
+    <h2>Contribuições</h2>
+    <div class="contrib-wrap"><canvas id="contrib" width="1100" height="380"></canvas></div>
+    <p class="note">Simulação do github-profile-3d-contrib com os 5 <code>contribColors</code> e o <code>backgroundColor</code> da variante.</p>
+
+    <blockquote id="quote"></blockquote>
+  </section>
+</main>
+
+<div class="ficha" id="ficha"></div>
+<div class="switcher" role="toolbar" aria-label="Variantes do protótipo">
+  <button id="prev" aria-label="Variante anterior">←</button>
+  <span class="label" id="label"></span>
+  <button id="next" aria-label="Próxima variante">→</button>
+  <button id="theme" title="Alternar tema do GitHub">◐</button>
+</div>
+
+<script>
+// ---------- ruído e terreno ----------
+function hash(i, j, seed) {
+  let h = Math.imul(i, 374761393) + Math.imul(j, 668265263) + Math.imul(seed, 982451653);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  h ^= h >>> 16;
+  return (h >>> 0) / 4294967295;
+}
+function vnoise(x, y, seed) {
+  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+  const s = t => t * t * (3 - 2 * t);
+  const a = hash(xi, yi, seed), b = hash(xi + 1, yi, seed), c = hash(xi, yi + 1, seed), d = hash(xi + 1, yi + 1, seed);
+  const u = s(xf), v = s(yf);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+function fbm(x, y, seed, oct = 5) {
+  let sum = 0, amp = 0.5, f = 1, norm = 0;
+  for (let o = 0; o < oct; o++) { sum += amp * vnoise(x * f, y * f, seed + o * 17); norm += amp; amp *= 0.5; f *= 2; }
+  return sum / norm;
+}
+const smooth = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
+
+// Terreno de serra: crista alongada com vários cumes (à moda da Serra do Mucajaí) sobre planície ondulada.
+// Forma inventada; na construção dá para trocar por um MDE real da serra.
+function makeSerra({ seed, x0, y0, x1, y1, width, scale }) {
+  const ax = x1 - x0, ay = y1 - y0, len2 = ax * ax + ay * ay;
+  return (u, v) => {
+    const t = Math.min(1, Math.max(0, ((u - x0) * ax + (v - y0) * ay) / len2));
+    const px = x0 + ax * t, py = y0 + ay * t;
+    const wob = (fbm(t * 6, 1.3, seed + 99, 3) - 0.5) * width * 0.9;
+    const d = Math.hypot(u - px, v - py + wob) / width;
+    const ends = smooth(0, 0.12, t) * smooth(1, 0.88, t);
+    const cumes = 0.55 + 0.45 * fbm(t * 9, 4.2, seed + 3, 3);
+    const crista = Math.exp(-d * d * 2.2) * ends * cumes * 0.75;
+    const low = fbm(u * scale, v * scale, seed) * 0.3;
+    const rug = fbm(u * scale * 4, v * scale * 4, seed + 7, 3) * 0.08 * crista;
+    return low + crista + rug;
+  };
+}
+function sampleGrid(h, w, hgt, uMax, vMax) {
+  const g = new Float32Array(w * hgt);
+  for (let j = 0; j < hgt; j++) for (let i = 0; i < w; i++) g[j * w + i] = h(i / (w - 1) * uMax, j / (hgt - 1) * vMax);
+  return g;
+}
+function hexToRgb(h) { const n = parseInt(h.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; }
+function ramp(colors, t) {
+  t = Math.min(0.9999, Math.max(0, t));
+  const p = t * (colors.length - 1), i = Math.floor(p), f = p - i;
+  const a = hexToRgb(colors[i]), b = hexToRgb(colors[i + 1]);
+  return [0, 1, 2].map(k => Math.round(a[k] + (b[k] - a[k]) * f));
+}
+
+// marching squares
+function contours(ctx, g, w, h, sx, sy, levels, style) {
+  levels.forEach((L, li) => {
+    style(ctx, li, L);
+    ctx.beginPath();
+    for (let j = 0; j < h - 1; j++) for (let i = 0; i < w - 1; i++) {
+      const a = g[j * w + i], b = g[j * w + i + 1], c = g[(j + 1) * w + i + 1], d = g[(j + 1) * w + i];
+      const idx = (a > L) << 3 | (b > L) << 2 | (c > L) << 1 | (d > L);
+      if (idx === 0 || idx === 15) continue;
+      const T = [i + (L - a) / (b - a), j], R = [i + 1, j + (L - b) / (c - b)];
+      const B = [i + (L - d) / (c - d), j + 1], Lf = [i, j + (L - a) / (d - a)];
+      const segs = {1:[[Lf,B]],2:[[B,R]],3:[[Lf,R]],4:[[T,R]],5:[[Lf,T],[B,R]],6:[[T,B]],7:[[Lf,T]],
+        8:[[Lf,T]],9:[[T,B]],10:[[T,R],[Lf,B]],11:[[T,R]],12:[[Lf,R]],13:[[B,R]],14:[[Lf,B]]}[idx];
+      for (const [p, q] of segs) { ctx.moveTo(p[0] * sx, p[1] * sy); ctx.lineTo(q[0] * sx, q[1] * sy); }
+    }
+    ctx.stroke();
+  });
+}
+function hillshade(g, w, h, zf) {
+  const out = new Float32Array(w * h);
+  const az = 315 * Math.PI / 180, alt = 45 * Math.PI / 180;
+  const lx = Math.cos(alt) * Math.sin(az), ly = -Math.cos(alt) * Math.cos(az), lz = Math.sin(alt);
+  for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) {
+    const ix = Math.min(w - 1, i + 1), iX = Math.max(0, i - 1), jy = Math.min(h - 1, j + 1), jY = Math.max(0, j - 1);
+    const dzdx = (g[j * w + ix] - g[j * w + iX]) * zf, dzdy = (g[jy * w + i] - g[jY * w + i]) * zf;
+    const n = Math.hypot(dzdx, dzdy, 1);
+    out[j * w + i] = Math.max(0, (-dzdx * lx - dzdy * ly + lz) / n);
+  }
+  return out;
+}
+function levelsFor(step, min = 0, max = 1.2) { const a = []; for (let l = min + step; l < max; l += step) a.push(l); return a; }
+
+// ---------- variantes ----------
+const BANNER_T = makeSerra({ seed: 11, x0: 1.55, y0: 0.82, x1: 3.85, y1: 0.28, width: 0.2, scale: 2.2 });
+const AVATAR_T = makeSerra({ seed: 5, x0: 0.12, y0: 0.78, x1: 0.88, y1: 0.26, width: 0.13, scale: 3 });
+
+const VARIANTS = {
+  A: {
+    name: 'Carta topográfica',
+    motivo: 'Curvas de nível, mestras a cada 5. Marginália de folha cartográfica.',
+    fonte: 'Source Serif 4',
+    paleta: ['#EFE7D6', '#C9B48A', '#8A6F47', '#5A4630', '#6E7B4F'],
+    contrib: { bg: '#EFE7D6', colors: ['#E3D8BE', '#C9B48A', '#A88B5C', '#6E7B4F', '#3F4A2E'] },
+    badge: '#6E7B4F',
+    quote: '“Transformação da quantidade em qualidade, e vice-versa.” — F. Engels, <i>Dialética da Natureza</i>, cap. “Dialética”',
+    banner(ctx, W, H) {
+      ctx.fillStyle = '#EFE7D6'; ctx.fillRect(0, 0, W, H);
+      const gw = 321, gh = 81, g = sampleGrid(BANNER_T, gw, gh, 4, 1);
+      contours(ctx, g, gw, gh, W / (gw - 1), H / (gh - 1), levelsFor(0.025), (c, li) => {
+        const mestra = (li + 1) % 5 === 0;
+        c.strokeStyle = mestra ? '#5A4630' : '#8A6F47'; c.lineWidth = mestra ? 1.6 : 0.7; c.globalAlpha = mestra ? 0.9 : 0.6;
+      });
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = '#5A4630'; ctx.lineWidth = 2; ctx.strokeRect(14, 14, W - 28, H - 28);
+      ctx.lineWidth = 0.6; ctx.strokeRect(20, 20, W - 40, H - 40);
+      ctx.fillStyle = 'rgba(239,231,214,.88)'; ctx.fillRect(48, 140, 660, 140);
+      ctx.fillStyle = '#2E2A24';
+      ctx.font = '600 15px "Source Serif 4"'; ctx.letterSpacing = '4px'; ctx.fillText('MATHEUS ZAMBONIN · GEOTECNOLOGIAS', 64, 172);
+      ctx.letterSpacing = '0px';
+      ctx.font = 'italic 34px "Source Serif 4"'; ctx.fillText('Transformação da quantidade em', 64, 216);
+      ctx.fillText('qualidade, e vice-versa.', 64, 254);
+      ctx.font = '13px "Source Serif 4"'; ctx.fillStyle = '#5A4630';
+      ctx.textAlign = 'right'; ctx.fillText('Serra do Mucajaí · RR · equidistância 20 m', W - 36, 44);
+      ctx.fillText('— F. Engels, Dialética da Natureza', W - 36, H - 34); ctx.textAlign = 'left';
+    },
+    avatar(ctx, S) {
+      ctx.fillStyle = '#EFE7D6'; ctx.fillRect(0, 0, S, S);
+      const n = 141, g = sampleGrid(AVATAR_T, n, n, 1, 1);
+      contours(ctx, g, n, n, S / (n - 1), S / (n - 1), levelsFor(0.03), (c, li) => {
+        const m = (li + 1) % 5 === 0; c.strokeStyle = m ? '#5A4630' : '#8A6F47'; c.lineWidth = m ? 2.4 : 1.1;
+      });
+    },
+  },
+
+  B: {
+    name: 'Nuvem de pontos',
+    motivo: 'Nuvem LiDAR em perspectiva, colorida por altitude. Tipografia mono de terminal.',
+    fonte: 'IBM Plex Mono',
+    paleta: ['#0A0F1A', '#1E3A5F', '#1F6F78', '#3FA27A', '#9BCB6B', '#E9E4A6'],
+    contrib: { bg: '#0A0F1A', colors: ['#16202E', '#1E3A5F', '#1F6F78', '#3FA27A', '#E9E4A6'] },
+    badge: '#1F6F78',
+    quote: '“A quantidade se converte em qualidade.” — F. Engels, <i>Anti-Dühring</i>, parte I, cap. XII',
+    banner(ctx, W, H) {
+      ctx.fillStyle = '#0A0F1A'; ctx.fillRect(0, 0, W, H);
+      const ramp5 = ['#1E3A5F', '#1F6F78', '#3FA27A', '#9BCB6B', '#E9E4A6'];
+      const pts = [];
+      for (let k = 0; k < 70000; k++) {
+        const u = hash(k, 1, 3) * 4, v = hash(k, 2, 3);
+        pts.push([u, v, BANNER_T(u, v)]);
+      }
+      pts.sort((a, b) => a[1] - b[1]);
+      for (const [u, v, z] of pts) {
+        const persp = 0.55 + 0.45 * v;
+        const x = W / 2 + (u / 4 - 0.5) * W * 1.05 * persp;
+        const y = 70 + v * 230 - z * 150 * persp;
+        const [r, g, b] = ramp(ramp5, (z - 0.1) / 0.8);
+        ctx.fillStyle = `rgba(${r},${g},${b},${0.35 + 0.55 * v})`;
+        ctx.fillRect(x, y, 1.1 + v, 1.1 + v);
+      }
+      const grd = ctx.createLinearGradient(0, 0, 640, 0);
+      grd.addColorStop(0, 'rgba(10,15,26,.92)'); grd.addColorStop(1, 'rgba(10,15,26,0)');
+      ctx.fillStyle = grd; ctx.fillRect(0, 0, 680, H);
+      ctx.fillStyle = '#9198a1'; ctx.font = '13px "IBM Plex Mono"';
+      ctx.fillText('$ pdal info serra-do-mucajai.laz | jq .count', 48, 70);
+      ctx.fillStyle = '#E6EDF3'; ctx.font = '600 44px "IBM Plex Mono"';
+      ctx.fillText('1.284.093 pontos', 48, 150);
+      ctx.fillStyle = '#3FA27A'; ctx.fillText('→ 1 terreno', 48, 204);
+      ctx.fillStyle = '#9198a1'; ctx.font = '15px "IBM Plex Mono"';
+      ctx.fillText('quantidade em qualidade · LAS 1.4 · classe 2 (solo)', 48, 250);
+    },
+    avatar(ctx, S) {
+      ctx.fillStyle = '#0A0F1A'; ctx.fillRect(0, 0, S, S);
+      const ramp5 = ['#1E3A5F', '#1F6F78', '#3FA27A', '#9BCB6B', '#E9E4A6'];
+      const pts = [];
+      for (let k = 0; k < 26000; k++) { const u = hash(k, 5, 9), v = hash(k, 6, 9); pts.push([u, v, AVATAR_T(u, v)]); }
+      pts.sort((a, b) => a[1] - b[1]);
+      for (const [u, v, z] of pts) {
+        const [r, g, b] = ramp(ramp5, (z - 0.1) / 0.8);
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(u * S, 40 + v * S * 0.85 - z * 150, 2, 2);
+      }
+    },
+  },
+
+  C: {
+    name: 'Relevo sombreado',
+    motivo: 'Hillshade com tinta hipsométrica, grade, rosa dos ventos e escala. Sans técnica.',
+    fonte: 'IBM Plex Sans',
+    paleta: ['#3D5A6C', '#7E9A7A', '#C2B98A', '#E8E1CC', '#1D2730'],
+    contrib: { bg: '#E8E1CC', colors: ['#D6D0BC', '#7E9A7A', '#5F7F6A', '#3D5A6C', '#1D2730'] },
+    badge: '#3D5A6C',
+    quote: '“Os filósofos apenas interpretaram o mundo de diferentes maneiras; o que importa é transformá-lo.” — K. Marx, <i>Teses sobre Feuerbach</i>, XI',
+    banner(ctx, W, H) {
+      const gw = 640, gh = 160, g = sampleGrid(BANNER_T, gw, gh, 4, 1), hs = hillshade(g, gw, gh, 60);
+      const img = ctx.createImageData(gw, gh), tint = ['#3D5A6C', '#7E9A7A', '#C2B98A', '#E8E1CC'];
+      for (let k = 0; k < gw * gh; k++) {
+        const [r, gg, b] = ramp(tint, (g[k] - 0.08) / 0.85), s = 0.45 + 0.75 * hs[k];
+        img.data.set([Math.min(255, r * s), Math.min(255, gg * s), Math.min(255, b * s), 255], k * 4);
+      }
+      const off = new OffscreenCanvas(gw, gh); off.getContext('2d').putImageData(img, 0, 0);
+      ctx.imageSmoothingQuality = 'high'; ctx.drawImage(off, 0, 0, W, H);
+      ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 1; ctx.font = '11px "IBM Plex Sans"'; ctx.fillStyle = 'rgba(255,255,255,.8)';
+      for (let x = 160; x < W; x += 160) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = 80; y < H; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+      ctx.fillText('Serra do Mucajaí', W - 300, H - 8);
+      ctx.fillStyle = 'rgba(29,39,48,.78)'; ctx.fillRect(40, 96, 470, 128);
+      ctx.fillStyle = '#F4F1E8'; ctx.font = '700 40px "IBM Plex Sans"'; ctx.fillText('O relevo é processo.', 60, 150);
+      ctx.font = '15px "IBM Plex Sans"'; ctx.fillStyle = '#C2B98A'; ctx.fillText('Matheus Zambonin · Geotecnologias · Roraima', 60, 192);
+      // rosa dos ventos e escala
+      ctx.save(); ctx.translate(W - 60, 60); ctx.fillStyle = '#F4F1E8';
+      ctx.beginPath(); ctx.moveTo(0, -26); ctx.lineTo(8, 10); ctx.lineTo(0, 4); ctx.lineTo(-8, 10); ctx.closePath(); ctx.fill();
+      ctx.font = '700 13px "IBM Plex Sans"'; ctx.textAlign = 'center'; ctx.fillText('N', 0, 28); ctx.restore();
+      ctx.fillStyle = '#F4F1E8'; ctx.fillRect(W - 230, H - 40, 80, 5); ctx.strokeStyle = '#F4F1E8'; ctx.strokeRect(W - 150, H - 40, 80, 5);
+      ctx.font = '11px "IBM Plex Sans"'; ctx.fillText('0', W - 233, H - 46); ctx.fillText('5 km', W - 82, H - 46);
+    },
+    avatar(ctx, S) {
+      const n = 230, g = sampleGrid(AVATAR_T, n, n, 1, 1), hs = hillshade(g, n, n, 40);
+      const img = ctx.createImageData(n, n), tint = ['#3D5A6C', '#7E9A7A', '#C2B98A', '#E8E1CC'];
+      for (let k = 0; k < n * n; k++) {
+        const [r, gg, b] = ramp(tint, (g[k] - 0.08) / 0.85), s = 0.45 + 0.75 * hs[k];
+        img.data.set([Math.min(255, r * s), Math.min(255, gg * s), Math.min(255, b * s), 255], k * 4);
+      }
+      const off = new OffscreenCanvas(n, n); off.getContext('2d').putImageData(img, 0, 0);
+      ctx.drawImage(off, 0, 0, S, S);
+      contours(ctx, g, n, n, S / (n - 1), S / (n - 1), levelsFor(0.15), c => { c.strokeStyle = 'rgba(29,39,48,.45)'; c.lineWidth = 1; });
+    },
+  },
+};
+
+// ---------- 3D contrib simulado ----------
+function drawContrib(ctx, W, H, { bg, colors }) {
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  const a = 9.2, b = 5.3, ox = 110, oy = 70;
+  const shade = (c, f) => { const [r, g, bl] = hexToRgb(c); return `rgb(${r * f | 0},${g * f | 0},${bl * f | 0})`; };
+  for (let s = 0; s < 53 + 7; s++) for (let d = 0; d < 7; d++) {
+    const w = s - d; if (w < 0 || w > 52) continue;
+    const r = hash(w, d, 42), lvl = r < 0.35 ? 0 : Math.min(4, 1 + Math.floor((r - 0.35) / 0.65 * 4 + Math.sin(w / 6) * 0.8));
+    const hgt = lvl === 0 ? 2 : 6 + lvl * 9 * (0.7 + hash(d, w, 7) * 0.6);
+    const x = ox + (w - d) * a + d * 2 * a * 0, sx = ox + w * a * 1.6 - d * a * 1.0, sy = oy + w * b * 0.55 + d * b * 1.7;
+    const c = colors[Math.max(0, lvl)];
+    const top = [[sx, sy - hgt], [sx + a, sy - hgt + b * 0.55 * 0.9], [sx + a * 0.4, sy - hgt + b * 2.2], [sx - a * 0.6, sy - hgt + b * 1.65]];
+    const poly = (pts, fill) => { ctx.beginPath(); pts.forEach(([px, py], i) => i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); };
+    poly([top[3], top[2], [top[2][0], top[2][1] + hgt], [top[3][0], top[3][1] + hgt]], shade(c, 0.72));
+    poly([top[2], top[1], [top[1][0], top[1][1] + hgt], [top[2][0], top[2][1] + hgt]], shade(c, 0.55));
+    poly(top, c);
+  }
+  const dark = hexToRgb(bg).reduce((s, v) => s + v, 0) < 300;
+  ctx.fillStyle = dark ? '#9198a1' : '#5A4630'; ctx.font = '14px "IBM Plex Sans"';
+  ctx.fillText('1.042 contribuições · out/2025 – set/2026', 24, H - 24);
+}
+
+// ---------- montagem e switcher ----------
+const KEYS = Object.keys(VARIANTS);
+const params = new URLSearchParams(location.search);
+let current = KEYS.includes(params.get('variant')) ? params.get('variant') : 'A';
+let theme = params.get('tema') || (matchMedia('(prefers-color-scheme: light)').matches ? 'claro' : 'escuro');
+let fichaAberta = true;
+
+function render() {
+  const V = VARIANTS[current];
+  document.documentElement.dataset.theme = theme;
+  const b = document.getElementById('banner').getContext('2d'); b.reset?.(); V.banner(b, 1280, 320);
+  const av = document.getElementById('avatar').getContext('2d'); av.reset?.(); V.avatar(av, 460);
+  const ct = document.getElementById('contrib').getContext('2d'); ct.reset?.(); drawContrib(ct, 1100, 380, V.contrib);
+  document.getElementById('quote').innerHTML = V.quote;
+  document.getElementById('badges').innerHTML = ['QGIS', 'GDAL', 'PDAL', 'Python', 'Claude']
+    .map(n => `<span class="badge"><span>${n}</span><span style="background:${V.badge}">●</span></span>`).join('');
+  document.getElementById('label').textContent = `${current} — ${V.name}`;
+  const sw = cs => `<div class="sw">${cs.map(c => `<div title="${c}" style="background:${c}"></div>`).join('')}</div>`;
+  document.getElementById('ficha').innerHTML = fichaAberta
+    ? `<button onclick="fichaAberta=false;render()">ocultar</button><b>${current} — ${V.name}</b><br>
+       motivo: ${V.motivo}<br>fonte do banner: ${V.fonte}<br>tema GitHub: ${theme}<br><br>
+       paleta${sw(V.paleta)}${V.paleta.join(' ')}<br><br>
+       3D contrib (contribColors)${sw(V.contrib.colors)}backgroundColor ${V.contrib.bg}`
+    : `<button onclick="fichaAberta=true;render()">ficha</button><b>${current}</b>`;
+  const url = new URL(location); url.searchParams.set('variant', current); url.searchParams.set('tema', theme);
+  history.replaceState(null, '', url);
+}
+function go(step) { current = KEYS[(KEYS.indexOf(current) + step + KEYS.length) % KEYS.length]; render(); }
+document.getElementById('prev').onclick = () => go(-1);
+document.getElementById('next').onclick = () => go(1);
+document.getElementById('theme').onclick = () => { theme = theme === 'claro' ? 'escuro' : 'claro'; render(); };
+addEventListener('keydown', e => {
+  if (e.target.closest('input, textarea, [contenteditable]')) return;
+  if (e.key === 'ArrowLeft') go(-1);
+  if (e.key === 'ArrowRight') go(1);
+});
+Promise.all(['600 44px "IBM Plex Mono"', '15px "IBM Plex Mono"', '700 40px "IBM Plex Sans"', '15px "IBM Plex Sans"',
+  'italic 34px "Source Serif 4"', '600 15px "Source Serif 4"', '13px "Source Serif 4"'].map(f => document.fonts.load(f)))
+  .finally(render);
+</script>
+</body>
+</html>
