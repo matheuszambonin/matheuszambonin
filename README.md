@@ -45,9 +45,9 @@ Estudando votação verificável em blockchain.
 ---
 
 <!-- CITACAO:INICIO -->
-> Os filósofos apenas interpretaram o mundo de diferentes maneiras; o que importa é transformá-lo.
+> A matéria é uma categoria filosófica para designar a realidade objetiva, que é dada ao homem nas suas sensações, que é copiada, fotografada, refletida pelas nossas sensações, existindo independentemente delas.
 >
-> <sub>K. Marx, *Teses sobre Feuerbach*, tese XI</sub>
+> <sub>V. I. Lenin, *Materialismo e empiriocriticismo*, cap. II, §4</sub>
 <!-- CITACAO:FIM -->
 
 <sub>✉ matheuszambonin@gmail.com</sub>
