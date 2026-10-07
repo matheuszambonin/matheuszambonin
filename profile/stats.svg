@@ -9,7 +9,7 @@
         aria-labelledby="descId"
       >
         <title id="titleId">Estat&#237;sticas do GitHub de Matheus Zambonin, Rank: C+</title>
-        <desc id="descId">Total de estrelas: 0, Total de Commits  (Ano passado) : 92, Total de PRs: 6, Total de Issues: 94, Contribuiu para (ano passado): 0</desc>
+        <desc id="descId">Total de estrelas: 0, Total de Commits  (Ano passado) : 92, Total de PRs: 6, Total de Issues: 95, Contribuiu para (ano passado): 1</desc>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -73,7 +73,7 @@
         stroke-dashoffset: 251.32741228718345;
       }
       to {
-        stroke-dashoffset: 215.5798109745166;
+        stroke-dashoffset: 215.53753782624946;
       }
     }
   
@@ -214,7 +214,7 @@
         x="274.01"
         y="12.5"
         data-testid="issues"
-      >94</text>
+      >95</text>
     </g>
   </g><g transform="translate(0, 100)">
     <g class="stagger" style="animation-delay: 1050ms" transform="translate(25, 0)">
@@ -229,7 +229,7 @@
         x="274.01"
         y="12.5"
         data-testid="contribs"
-      >0</text>
+      >1</text>
     </g>
   </g>
     </svg>
