@@ -45,9 +45,9 @@ Estudando votação verificável em blockchain.
 ---
 
 <!-- CITACAO:INICIO -->
-> A matéria é uma categoria filosófica para designar a realidade objetiva, que é dada ao homem nas suas sensações, que é copiada, fotografada, refletida pelas nossas sensações, existindo independentemente delas.
+> Sem teoria revolucionária não pode haver movimento revolucionário.
 >
-> <sub>V. I. Lenin, *Materialismo e empiriocriticismo*, cap. II, §4</sub>
+> <sub>V. I. Lenin, *Que fazer?*, cap. I</sub>
 <!-- CITACAO:FIM -->
 
 <sub>✉ matheuszambonin@gmail.com</sub>
