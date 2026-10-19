@@ -45,9 +45,9 @@ Estudando votação verificável em blockchain.
 ---
 
 <!-- CITACAO:INICIO -->
-> Sem teoria revolucionária não pode haver movimento revolucionário.
+> A ortodoxia em matéria de marxismo refere-se antes e exclusivamente ao método.
 >
-> <sub>V. I. Lenin, *Que fazer?*, cap. I</sub>
+> <sub>G. Lukács, *História e consciência de classe*, “O que é marxismo ortodoxo?”</sub>
 <!-- CITACAO:FIM -->
 
 <sub>✉ matheuszambonin@gmail.com</sub>
