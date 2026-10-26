@@ -45,9 +45,9 @@ Estudando votação verificável em blockchain.
 ---
 
 <!-- CITACAO:INICIO -->
-> A ortodoxia em matéria de marxismo refere-se antes e exclusivamente ao método.
+> Os filósofos apenas interpretaram o mundo de diferentes maneiras; o que importa é transformá-lo.
 >
-> <sub>G. Lukács, *História e consciência de classe*, “O que é marxismo ortodoxo?”</sub>
+> <sub>K. Marx, *Teses sobre Feuerbach*, tese XI</sub>
 <!-- CITACAO:FIM -->
 
 <sub>✉ matheuszambonin@gmail.com</sub>
