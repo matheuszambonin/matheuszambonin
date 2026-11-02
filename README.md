@@ -45,9 +45,9 @@ Estudando votação verificável em blockchain.
 ---
 
 <!-- CITACAO:INICIO -->
-> Os filósofos apenas interpretaram o mundo de diferentes maneiras; o que importa é transformá-lo.
+> Os homens fazem a sua própria história, mas não a fazem como querem; não a fazem sob circunstâncias de sua escolha, e sim sob aquelas com que se defrontam diretamente, legadas e transmitidas pelo passado.
 >
-> <sub>K. Marx, *Teses sobre Feuerbach*, tese XI</sub>
+> <sub>K. Marx, *O 18 de Brumário de Luís Bonaparte*, cap. I</sub>
 <!-- CITACAO:FIM -->
 
 <sub>✉ matheuszambonin@gmail.com</sub>
