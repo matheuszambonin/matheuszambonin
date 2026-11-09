@@ -45,7 +45,7 @@ Estudando votação verificável em blockchain.
 ---
 
 <!-- CITACAO:INICIO -->
-> Os homens fazem a sua própria história, mas não a fazem como querem; não a fazem sob circunstâncias de sua escolha, e sim sob aquelas com que se defrontam diretamente, legadas e transmitidas pelo passado.
+> A tradição de todas as gerações mortas oprime como um pesadelo o cérebro dos vivos.
 >
 > <sub>K. Marx, *O 18 de Brumário de Luís Bonaparte*, cap. I</sub>
 <!-- CITACAO:FIM -->
