@@ -45,9 +45,9 @@ Estudando votação verificável em blockchain.
 ---
 
 <!-- CITACAO:INICIO -->
-> A tradição de todas as gerações mortas oprime como um pesadelo o cérebro dos vivos.
+> Não é a consciência dos homens que determina o seu ser; ao contrário, é o seu ser social que determina a sua consciência.
 >
-> <sub>K. Marx, *O 18 de Brumário de Luís Bonaparte*, cap. I</sub>
+> <sub>K. Marx, *Contribuição à crítica da economia política*, prefácio</sub>
 <!-- CITACAO:FIM -->
 
 <sub>✉ matheuszambonin@gmail.com</sub>
