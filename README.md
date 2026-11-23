@@ -45,9 +45,9 @@ Estudando votação verificável em blockchain.
 ---
 
 <!-- CITACAO:INICIO -->
-> Não é a consciência dos homens que determina o seu ser; ao contrário, é o seu ser social que determina a sua consciência.
+> O capital é trabalho morto, que apenas se reanima, à maneira dos vampiros, chupando trabalho vivo, e que vive tanto mais quanto mais trabalho vivo chupa.
 >
-> <sub>K. Marx, *Contribuição à crítica da economia política*, prefácio</sub>
+> <sub>K. Marx, *O capital*, livro I, cap. 8</sub>
 <!-- CITACAO:FIM -->
 
 <sub>✉ matheuszambonin@gmail.com</sub>
